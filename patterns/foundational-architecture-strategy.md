@@ -360,7 +360,7 @@ Decision : The below Patform and Governance controls will be reviewed with techn
 
 ---
 
-## Part 3: Architectural Diagrams (PlantUML ONLY)
+## Part 3: Architectural Diagrams
 
 ### 3.1 High‑Level System Architecture
 

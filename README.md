@@ -1,55 +1,82 @@
-# ai-data-architecture
+# Data Platform Architecture
 
-Patterns, decision records, and reference designs for a well-architected data platform.
+A comprehensive framework for building and maintaining enterprise-scale AI and data platforms with well-documented architecture patterns.
 
-## Goals
-- **Single source** for architecture patterns, RFCs/ADRs, and system designs.
-- **Diagrams-as-code**: all diagrams in PlantUML (C4 model: C1–C4), auto-rendered to SVG.
-- **Repeatable templates**: consistent Markdown docs, reviewable via PRs.
+## Objective
 
-## What’s inside
-- `patterns/` — reusable patterns (ingestion, governance, quality, lineage, orchestration, MLOps).
-- `design-docs/` — system/feature designs (proposal → review → accepted).
-- `adrs/` — Architecture Decision Records (lightweight).
-- `diagrams/` — PlantUML sources + generated SVGs (C1–C4).
-- `templates/` — templates for ADRs, design docs, patterns.
-- `docs/` — optional static docs site (MkDocs + Kroki) for pretty browsing.
+To provide a structured approach for:
+- Building scalable data & AI architectures
+- Maintaining architectural consistency
+- Documenting decisions and patterns
+- Enabling collaborative design reviews
 
-## Quick start
-1. **Install tooling**
-   - Java or Docker (for PlantUML CLI), Markdown linter (optional).
-   - VS Code extensions (recommended): PlantUML, Markdown All in One, markdownlint.
-2. **Render diagrams locally**
-   ```bash
-   ./scripts/render_diagrams.sh
-   ```
-   SVGs appear under `diagrams/svg/`.
-3. **Create a design**
-   - Copy `templates/arch-doc.md` → `design-docs/<topic>/README.md`
-   - Add diagrams under `diagrams/c4/<topic>/` as `.puml` (C1–C4)
-   - Reference rendered SVGs in your Markdown.
-4. **Propose a change**
-   - Create a branch `feat/<topic>`; open a PR using the provided template.
+## Repository Structure
 
-## Viewing diagrams
-- **GitHub**: PRs and README reference the **generated SVGs**.
-- **VS Code**: preview `.puml` files with the PlantUML extension.
-- **Docs site (optional)**: `mkdocs serve` to browse diagrams rendered via Kroki.
+### Core Documentation
 
-## C4 Modeling
-All systems should include at least:
-- **C1**: System Landscape
-- **C2**: Container diagram
-- **C3**: Component diagram
-- **C4**: Code-level (selected hotspots only)
+- `/patterns` — Enterprise data & AI patterns
+   - Data Ingestion & Processing
+   - Data Governance & Security
+   - Data Quality & Testing
+   - MLOps & Model Lifecycle
+   - Pipeline Orchestration
+   - Monitoring & Observability
 
-## Well-Architected pillars (data platform)
-- Security & Governance
-- Reliability
-- Cost Efficiency
-- Performance
-- Operational Excellence
-- Sustainability
+- `/design-docs` — Detailed system designs
+   - Platform Components
+   - Integration Patterns
+   - Scaling Strategies
+   - Security Architecture
+
+- `/adrs` — Architecture Decision Records
+   - Platform Choices
+   - Technology Selections
+   - Implementation Decisions
+
+### Supporting Resources
+
+- `/diagrams` — Architecture Diagrams (C4 Model)
+   - System Context (C1)
+   - Containers (C2)
+   - Components (C3)
+   - Code (C4)
+
+- `/templates` — Standardized Documentation
+- `/docs` — Generated Documentation Site
+
+## Getting Started
+
+1. **Setup Environment**
+    ```bash
+    # Install dependencies
+    mkdir -p patterns/data-ingestion patterns/governance patterns/quality patterns/mlops patterns/orchestration patterns/monitoring
+    mkdir -p design-docs/components design-docs/integration design-docs/scaling design-docs/security
+    mkdir -p adrs/platform adrs/technology adrs/implementation
+    mkdir -p diagrams/context diagrams/containers diagrams/components diagrams/code
+    mkdir -p templates docs scripts
+    touch scripts/setup.sh scripts/render_diagrams.sh
+    chmod +x scripts/setup.sh scripts/render_diagrams.sh
+    ```
+
+2. **Create Architecture Documents**
+    - Use templates from `/templates`
+    - Follow C4 model conventions
+    - Include required diagrams
+
+3. **Review Process**
+    - Create feature branch
+    - Follow PR template
+    - Ensure diagram generation
+    - Update documentation
+
+## Architecture Principles
+
+- **Documentation as Code**
+- **Diagram Automation**
+- **Consistent Patterns**
+- **Collaborative Reviews**
+- **Version Control**
 
 ## License
-MIT (adjust as needed).
+MIT License
+
