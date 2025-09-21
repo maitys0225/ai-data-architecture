@@ -1,0 +1,24 @@
+@startuml
+title Data Product Flow: Source to Consumer
+participant "Orchestrator" as CTM
+participant "Ingestion" as ING
+database "Landing" as LAND
+participant "Databricks Job" as DBX
+participant "Quality Check" as DQ
+database "Delta Lake" as DELTA
+participant "Unity Catalog" as UC
+participant "Consumers" as CONS
+
+CTM -> ING: Trigger load
+ING -> LAND: Write data
+CTM -> DBX: Process data
+DBX -> LAND: Read
+DBX -> DQ: Validate
+alt Quality Passed
+        DBX -> DELTA: Write
+        DBX -> UC: Update metadata
+        UC -> CONS: Enable access
+else Quality Failed
+        DQ -> CTM: Alert failure
+end
+@enduml

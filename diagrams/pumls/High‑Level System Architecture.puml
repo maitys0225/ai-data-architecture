@@ -1,0 +1,70 @@
+@startuml
+skinparam componentStyle rectangle
+title High-Level Architecture: Azure Databricks Lakehouse with Data Mesh
+
+package "Source Systems" {
+    [Mainframe] as MF
+    [RDBMS] as DB
+    [File Servers] as FS
+}
+
+package "Control Plane" {
+    [Identity & Security] as ID
+    [Unity Catalog] as UC
+    [Control-M Scheduler] as CTM
+    [Observability] as OBS
+    [Platform Portal] as PORTAL
+}
+
+package "Data Lake" {
+    [Landing] as LAND
+    [Bronze Zone] as BRONZE
+    [Silver Zone] as SILVER
+    [Gold Products] as GOLD
+}
+
+package "Domain Workspaces" {
+    package "Domain: Payments" {
+        [Databricks - Payments] as DBX1
+        [Orchestrator - Payments] as ORCH1
+    }
+    package "Domain: Wealth" {
+        [Databricks - Wealth] as DBX2
+        [Orchestrator - Wealth] as ORCH2
+    }
+}
+
+package "Consumers" {
+    [SQL Analytics] as SQL
+    [APIs] as API
+    [BI Tools] as BI
+    [Delta Sharing] as SHARE
+}
+
+' Key flows
+MF --> LAND
+DB --> LAND
+FS --> LAND
+
+CTM --> ORCH1
+CTM --> ORCH2
+
+LAND --> DBX1
+DBX1 --> BRONZE
+DBX1 --> SILVER
+DBX1 --> GOLD
+
+LAND --> DBX2
+DBX2 --> BRONZE
+DBX2 --> SILVER
+DBX2 --> GOLD
+
+UC --> DBX1
+UC --> DBX2
+
+GOLD --> SQL
+GOLD --> API
+GOLD --> BI
+GOLD --> SHARE
+
+@enduml

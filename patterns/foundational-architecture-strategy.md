@@ -155,7 +155,8 @@ Core responsibilities:
     * Export as **Parquet** only when Delta isn't supported
 
 
-### 1.4 Orchestration Strategy
+### 1.4 Orchestration Strategy (ADF → Target State)
+
 
 **Context:** Hybrid environment with mainframe and cloud workloads requiring Autosys replacement to move Autosys & ADF coupled batches in the DPAS platform.
 
@@ -176,6 +177,17 @@ Core responsibilities:
     * Stonebranch UAC
     * Tidal Automation
 
+**Recommendation**
+
+* **Enterprise scheduler‑of‑record: Control‑M.**
+  It is the only option of the three that **natively** spans **mainframe + cloud** with **bank‑grade SLAs, calendars, approvals, and audit**. Use it to coordinate windowed batch, trigger domain orchestrators, and enforce change governance.
+
+* **Domain‑level orchestrator: Dagster (preferred) or Airflow.**
+  Domains build pipelines/assets close to their code and product contracts. Control‑M triggers domain orchestrations via APIs/events and ingests their run status/SLOs.
+
+  * If forced to pick a **single engine** for the entire hybrid estate: **Control‑M**.
+
+
 **Implementation Approach:**
 
 * Phase 1: CTO platform selection
@@ -191,6 +203,10 @@ Core responsibilities:
 * Azure-native security and monitoring
 
 ## Part 2: Platform and Governance
+
+Decision : The below Patform and Governance controls will be reviewed with technology partners like **Databricks** and other vendors and overall UBS alignment
+
+### **Summary**
 
 ### 2.1 Self-Service Capabilities
 - Interactive product onboarding
@@ -231,3 +247,147 @@ Core responsibilities:
 - Data lineage
 - Pipeline execution
 - Cost reporting
+
+### **Details**
+
+### 2.1 Self‑Service Capabilities (paved‑road)
+
+* **Data Product Onboarding Wizard**
+
+  * Creates **UC catalog/schema**, ADLS containers, workspace, cluster policies, repos, CI/CD, SLO templates, DQ scaffolds, tags/labels, and FinOps budget.
+
+* **Automated Compute Provisioning**
+
+  * Opinionated **cluster policies** (photon, auto‑terminate, pools), serverless SQL warehouses, job clusters; GPU templates when approved.
+
+* **Pipeline Blueprints**
+
+  * Templates for **batch CDC**, streaming (Event Hubs/Kafka → DLT), file ingestion (Avro/Parquet), and contract‑first transformations (Bronze→Silver→Gold).
+
+* **Data Quality Setup**
+
+  * Scaffold **Great Expectations/Soda** suites, thresholds, quarantine paths, alert routes; pre‑wired to lineage and SLO dashboards.
+
+* **Data Contract & Schema Registry**
+
+  * JSON Schema/Avro contract registry; breaking‑change checks; consumer‑driven contract tests.
+
+* **Access & Sharing**
+
+  * One‑click access requests (row/column masking + tags), **Delta Sharing** recipient provisioning, token lifecycle, data use attestations.
+
+* **Observability & SLOs**
+
+  * Out‑of‑the‑box dashboards: freshness, completeness, timeliness, cost/unit, lineage, and incident runbooks.
+
+* **CI/CD for Data**
+
+  * Branch protections, environment promotions, **table change reviews**, data diffs/sampling gates, **quality gates** pre‑prod, artifact registries (wheels, bundles).
+
+* **FinOps Guardrails**
+
+  * Budgets, auto‑suspend, cost anomaly alerts, resource quotas per domain/product.
+
+---
+
+### 2.2 Platform Portal (Custom UI) — Key Panes
+
+* **Home & Scorecards**: Org‑wide SLA/SLO heatmaps, latest incidents, cost overview.
+* **Products**: Create/view products; status, owners, schemas, SLOs, lineage map, access policies; publish/release notes.
+* **Pipelines**: Runs, dependencies, backfills; deploy/promote; approve change windows.
+* **Schemas & Contracts**: Register/edit schemas, contract tests, diff/breaking‑change analysis.
+* **Quality**: DQ suites, failed expectations, quarantines, sample drift.
+* **Access**: Request/grant view; ABAC tags; masking previews; audit trails.
+* **Compute**: Request clusters/warehouses; policy compliance; utilization.
+* **Observability**: Logs/metrics/traces; data SLO dashboards; alert routing.
+* **FinOps**: Budgets, spend by product, unit‑cost KPIs.
+* **Sharing**: Delta Sharing recipients, tokens, usage analytics.
+* **Runbooks & Compliance**: DR drills, playbooks, attestations, evidence export.
+
+---
+
+### 2.3 Control Plane APIs (Gateway Endpoints)
+
+* **Data Product Catalog API**
+
+  * `POST /products` – register new product (owner, domain, SLOs, tags)
+  * `GET /products/{id}` – product metadata, lineage root, ACLs
+  * `GET /products/{id}/schema` – active schema & versions
+  * `POST /products/{id}/release` – publish a new product version
+
+* **Compute Management API**
+
+  * `POST /clusters` – provision job cluster from policy template
+  * `DELETE /clusters/{id}` – decommission with evidence capture
+  * `POST /sql-warehouses` – create governed SQL endpoint
+  * `GET /compute/{id}/utilization` – usage & cost metrics
+
+* **Access Control API**
+
+  * `POST /grants` – grant dataset access with ABAC tags + masking policy
+  * `DELETE /grants/{id}` – revoke; record audit
+  * `POST /sharing/recipients` – create Delta Sharing recipient
+  * `POST /policies/masking` – define dynamic masking by tag/classification
+
+* **Schema & Contract API**
+
+  * `POST /schemas` – register JSON Schema/Avro; attach to product
+  * `POST /contracts` – register contract; link producer/consumers
+  * `POST /contracts/{id}/validate` – run breaking‑change check
+
+* **Quality & SLO API**
+
+  * `POST /dq/suites` – create expectation suite
+  * `POST /slo` – set targets (freshness, completeness)
+  * `GET /slo/{productId}` – current status & burn rate
+
+* **Lineage & Observability API**
+
+  * `POST /lineage/events` – OpenLineage payload ingest
+  * `GET /lineage/{productId}` – graph/edges
+  * `POST /alerts/routes` – subscribe on conditions
+
+* **Orchestration API**
+
+  * `POST /runs` – request domain pipeline run (idempotent)
+  * `POST /runs/{id}/status` – domain orchestrator callback
+  * `POST /maintenance/windows` – schedule/approve freeze windows
+
+* **FinOps API**
+
+  * `POST /budgets` – set per‑domain/product budgets
+  * `GET /spend/{productId}` – showback/chargeback details
+
+---
+
+## Part 3: Architectural Diagrams (PlantUML ONLY)
+
+### 3.1 High‑Level System Architecture
+
+![High-Level System Architecture](../diagrams/svg/High‑Level%20System%20Architecture.svg)
+
+### 3.2 Core Data Flow Sequence
+
+![Data Product Flow: Source to Consumer](../diagrams/svg/CoreDataFlowSequence.svg)
+
+
+### 3.3 Platform Components
+
+### 3.3 Platform Components
+
+The following diagram shows the core platform components and their relationships:
+
+![Platform Components](../diagrams/svg/Platform%20Components.svg)
+
+Key relationships:
+- Identity manages Access Control authentication
+- Catalog coordinates with Storage for data asset management
+- Scheduler triggers Processing jobs
+- Processing outputs feed into Quality checks
+- Quality metrics flow to Monitoring
+- Storage exposes data through APIs
+- Policies govern Processing operations
+
+These components form the foundation of our data platform architecture, enabling secure and efficient data operations while maintaining governance standards.
+
+

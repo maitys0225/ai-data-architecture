@@ -1,0 +1,30 @@
+@startuml
+title Platform Component View
+package "Control" {
+    [Identity]
+    [Catalog]
+    [Scheduler]
+    [Monitoring]
+}
+
+package "Data" {
+    [Storage]
+    [Processing]
+    [Quality]
+    [APIs]
+}
+
+package "Governance" {
+    [Policies]
+    [Lineage]
+    [Access Control]
+}
+
+[Identity] --> [Access Control]
+[Catalog] --> [Storage]
+[Scheduler] --> [Processing]
+[Processing] --> [Quality]
+[Quality] --> [Monitoring]
+[Storage] --> [APIs]
+[Policies] --> [Processing]
+@enduml
