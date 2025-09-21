@@ -1,6 +1,6 @@
 # Layout
 
- **domain-first** layout with clear ownership, consistent templates, and zero “random folders.” Here’s a **scalable, collaboration-friendly** structure you can adopt right away.
+ **domain-first** layout with clear ownership, consistent templates, and zero "random folders." Here's a **scalable, collaboration-friendly** structure you can adopt right away.
 
 # Design principles
 
@@ -102,7 +102,7 @@ ai-data-architecture/
 
 ---
 
-# Placement rules (“what goes where?”)
+# Placement rules ("what goes where?")
 
 * **Architecture for a business capability** → `domains/<domain>/products/<product>/…`
 * **Reusable pattern or standard** → `library/patterns/…`
@@ -207,7 +207,7 @@ related_adrs: ["ADR-0007-feature-store-read-paths"]
 * **PR template**:
 
   * Checklists: C4 coverage, data governance, security, cost
-  * “Which domain/product?” and “Which ADR(s)?” fields
+  * "Which domain/product?" and "Which ADR(s)?" fields
 * **Labels**:
 
   * `domain:customer`, `product:feature-store`, `type:pattern`, `status:proposal`, `needs:security-review`
@@ -217,7 +217,7 @@ related_adrs: ["ADR-0007-feature-store-read-paths"]
 # Lifecycle: archive & deprecate
 
 * When a project merges or is replaced, update `status` in front matter and add a banner at the top.
-* Move orphaned or historical docs to `archive/` **only** if they’re confusing in place; otherwise keep them where they were with `status: deprecated`.
+* Move orphaned or historical docs to `archive/` **only** if they're confusing in place; otherwise keep them where they were with `status: deprecated`.
 
 ---
 
@@ -260,9 +260,7 @@ domains/customer/products/feature-store/
 # Governance & review lanes (short)
 
 * **Patterns**: reviewed by platform architects + at least one domain owner.
-* **Domain/product docs**: reviewed by that domain’s owners (from `CODEOWNERS`).
+* **Domain/product docs**: reviewed by that domain's owners (from `CODEOWNERS`).
 * **Cross-domain workstreams**: must tag all impacted domain owners.
 
 ---
-
-If you want, I can **generate this exact scaffold** (with README stubs, CODEOWNERS, and templates) as a ZIP—just say the initial domain/product names and team handles you want wired in.
