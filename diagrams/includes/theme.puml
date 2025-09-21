@@ -1,0 +1,8 @@
+' Simple theme customizations
+!define C4PumlTheme true
+skinparam shadowing false
+skinparam wrapWidth 200
+skinparam maxMessageSize 200
+skinparam ArrowThickness 1
+skinparam RectangleBorderColor #999999
+skinparam defaultFontName Arial

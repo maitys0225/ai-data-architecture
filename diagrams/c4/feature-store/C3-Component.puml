@@ -1,0 +1,17 @@
+@startuml
+!include ../../includes/c4_includes.puml
+!include ../../includes/theme.puml
+
+title C3 - Component (Feature API)
+
+Container_Boundary(api, "Feature API") {
+  Component(router, "Router")
+  Component(auth, "AuthN/Z")
+  Component(cache, "Cache Layer")
+  Component(reader, "Feature Reader")
+}
+
+Rel(router, auth, "JWT check")
+Rel(router, cache, "Get/Put")
+Rel(reader, cache, "Fallback")
+@enduml

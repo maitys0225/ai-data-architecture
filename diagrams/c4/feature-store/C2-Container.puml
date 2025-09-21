@@ -1,0 +1,17 @@
+@startuml
+!include ../../includes/c4_includes.puml
+!include ../../includes/theme.puml
+
+title C2 - Container (Feature Store)
+
+Container(api, "Feature API", "REST/gRPC", "Online serving of feature vectors")
+Container(offline, "Offline Store", "Parquet/Lake", "Historical features")
+Container(online, "Online Store", "Redis", "Low-latency features")
+Container(job, "Ingestion Jobs", "Spark/Airflow", "Build features")
+Person(dev, "Developer")
+
+Rel(dev, job, "Defines jobs")
+Rel(job, offline, "Writes batch features")
+Rel(job, online, "Writes materialized features")
+Rel(api, online, "Reads features")
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+!include ../../includes/c4_includes.puml
+!include ../../includes/theme.puml
+
+title C1 - System Landscape (Feature Store)
+
+Person(dev, "Developer")
+System_Boundary(sys, "Data Platform") {
+  System(etl, "ETL Pipelines")
+  System(fs, "Feature Store")
+  System(ml, "ML Training/Serving")
+}
+
+Rel(dev, etl, "Commits pipelines")
+Rel(etl, fs, "Publishes features")
+Rel(fs, ml, "Serves features")
+
+@enduml

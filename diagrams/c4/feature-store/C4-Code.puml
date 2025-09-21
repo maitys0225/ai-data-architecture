@@ -1,0 +1,8 @@
+@startuml
+!include ../../includes/theme.puml
+
+title C4 - Code (Sample Pseudocode)
+class FeatureService {
+  +getFeatureVector(entityId): FeatureVector
+}
+@enduml
