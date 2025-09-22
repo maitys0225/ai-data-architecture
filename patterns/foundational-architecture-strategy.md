@@ -13,8 +13,9 @@
   - [ ] The DPAS platform provides paved roads and guardrails.
 
 * **Anti‑pattern: Centralise SFTP as a primary ingestion tier for mission‑critical feeds from Mainframe.**
-  - [ ] Acceptable for interim Mainframe migration and modernisation only. 
-  - [ ] For mainframe and RDBMS sources, **CDC** (e.g., IBM/Precisely/Qlik) or **event streaming** is the standard to meet freshness/SLA and auditability.
+  - [ ] Acceptable for interim Mainframe migration and modernisation only.
+  - [ ] For mainframe EOD & other batch loads, until mainframe exit will use the centralise SFTP based transport mechanism.
+  - [ ] For mainframe and RDBMS sources - **CDC** (e.g., IBM/Precisely/Qlik) or **event streaming** is the standard to meet freshness/SLA and auditability.
 
 * **Anti‑pattern: One Databricks workspace for the entire platfrom per env ( Dev/QA/Prod ).**
   - [ ] Hard to isolate blast radius and costs. 
@@ -26,23 +27,6 @@
 
 * **Anti‑pattern: Proprietary table formats that lock analytics to one engine.**
   - [ ] Mandate **open table format semantics** (Delta Lake OSS with UniForm) and **open file formats** at the edges.
-
-## Assumptions & Anti‑Patterns Called Out (Challenge the Brief)
-
-* **Anti‑pattern: "Central platform builds all data products."**
-  This violates Data Mesh. Domain teams must own pipelines and product SLOs; the platform provides paved roads and guardrails.
-
-* **Anti‑pattern: SFTP as a primary ingestion tier for mission‑critical feeds.**
-  Acceptable for noncritical batch or interim migration only. For mainframe and RDBMS sources, **CDC** (e.g., IBM/Precisely/Qlik) or **event streaming** is the standard to meet freshness/SLA and auditability.
-
-* **Anti‑pattern: One Databricks workspace for the entire bank.**
-  Hard to isolate blast radius and costs. Use **per‑domain workspaces** with **Unity Catalog** enforcing global policies.
-
-* **Anti‑pattern: Multiple orchestrators without a "system of record."**
-  Leads to broken SLAs and unclear ownership. Use a **scheduler‑of‑record** for cross‑domain + legacy coordination, and allow domain‑level orchestrators behind API/event contracts.
-
-* **Anti‑pattern: Proprietary table formats that lock analytics to one engine.**
-  Mandate **open table format semantics** (Delta Lake OSS with UniForm) and **open file formats** at the edges.
 
 ---
 
